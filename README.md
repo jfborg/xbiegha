@@ -6,7 +6,10 @@ A personal photo studio for collages, passport photo preparation, and everyday e
 
 - Collages with 1–8 photos, three responsive arrangements, four aspect ratios, custom backgrounds, spacing, rounded corners, and captions.
 - Photo cropping, repositioning, zoom, rotation, mirroring, exposure, contrast, saturation, warmth, fade, vignette, and six original colour presets.
-- Malta, UK and US **printed** passport photo sizing, manual positioning guides and a pre-export checklist. Exports 300-DPI JPEGs and physically sized 4 × 6 inch PDF print sheets.
+- 20 document/submission profiles across 14 countries and territories, including UAE passport, Emirates ID, Dubai/RTA, Abu Dhabi/TAMM and other emirates/MOI driving routes. Printed and digital contracts are separate.
+- Automatic on-device face, glasses, expression, pose, eye, colour, background and detail screening after import/capture and crop changes. Failures lock document exports; uncertain findings require explicit personal review.
+- Measured head/crown/chin guides, source-resolution and recency checks, explicit application upload limits, exact JPEG pixel dimensions and physically sized 4 × 6 inch PDF sheets.
+- Versioned terms and photo limitations, privacy notice, contextual warnings and a required document-export acknowledgement.
 - PNG, JPEG and WebP exports up to 3,600 pixels on the long edge, without watermarks.
 - Undo/redo, browser-local IndexedDB project saving, editable `.xbiegha` backups, and restore/import.
 - Responsive desktop and mobile interface, self-hosted fonts, accessible labels, keyboard shortcuts, reduced-motion support, and a custom SVG logo.
@@ -35,13 +38,17 @@ Vercel framework: **Vite**. Build: `pnpm build`. Output: `dist`. Production bran
 
 ## Passport photos
 
-This is a photo positioning and print-size tool, not an automated biometric compliance service. Guides do not detect a face or certify acceptance. It intentionally does not apply editing filters in passport mode. Use a recent, unaltered original against the background required by the issuing authority. The bundled sample portrait is for demonstrating the tools only and is not an example of a compliant passport photo. Check whether your application accepts supplied printed photos; Malta normally captures adult passport photographs at its office. Online application requirements differ from printed-photo requirements.
+The checker is an aid, not an official acceptance guarantee. It estimates visible features and can miss defects or produce false warnings. The receiving authority decides acceptance. Identity, original capture date, authorised photography, exceptions, paper and endorsements require user/authority verification. The bundled portrait is deliberately a non-compliant demonstration and cannot be exported as a document photo.
 
-- [Malta: Identità](https://identita.gov.mt/frequently-asked-questions/passport/)
-- [United Kingdom: printed passport photos](https://www.gov.uk/photos-for-passports/photo-requirements)
-- [United States: passport photos](https://travel.state.gov/en/passports/apply/help/photos.html)
+Profiles cover standard adults (18+); child/baby exports are blocked. Sources and their review date are included in each profile in `src/passport.ts`. Medical-exemption cases must be handled with the authority. UAE digital and driving routes require dimensions and limits copied from the current application; the app does not invent a universal contract where the public authority guidance does not establish one.
 
-Print PDF sheets on 4 × 6 inch photographic paper at **100% / Actual size**, with scaling and fit-to-page disabled. JPEG exports contain 300-DPI JFIF metadata. Document acceptance remains with the issuing authority.
+Print routes normally export at 600 DPI (an app quality choice, not a universal official minimum); the Netherlands requires at least 400 DPI. Digital profiles use their actual required pixels. Print PDF sheets at **100% / Actual size**, with scaling disabled, and follow the route's printing conditions. Some authorities require live capture or professional/authorised photography, which this app cannot replace.
+
+The browser downloads about 40 MB of self-hosted code/models on first document-photo use; inference has no per-photo fee. The heavy checker is lazy-loaded. Build-time downloads verify pinned SHA-256 hashes; see `scripts/vision-models.json` and `public/vision/README.md`. Model assets and WASM files are generated, not checked into Git.
+
+## Legal notices
+
+`public/terms.html` and `public/privacy.html` describe the actual local-processing architecture, official-rule and model limitations, non-affiliation, printing/storage risks, and mandatory-rights carve-outs. Export acknowledgement is versioned and held only in page memory; it is not a server-side evidence ledger. Operator identity/contact details were intentionally omitted at the owner's request. That omission and the applicable service/hosting arrangements need to be resolved before claiming a complete public-facing legal/privacy compliance package. Disclaimers do not prevent claims or replace an operator-specific legal review.
 
 ## File support
 

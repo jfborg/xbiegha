@@ -1,0 +1,20 @@
+export type VisionFinding = { id: string; label: string; status: 'clear' | 'fail' | 'review'; detail: string };
+export type VisionMetrics = { faces: number; glasses?: number; roll?: number; yaw?: number; pitch?: number; smile?: number; mouthOpen?: number; blink?: number; backgroundMean?: number; backgroundSpread?: number; backgroundChroma?: number; sharpness?: number; colourChroma?: number };
+export function visionFindings(m: VisionMetrics, glassesRule: 'remove' | 'avoid' | 'clear' = 'clear', background: 'white' | 'light' | 'not-white' = 'white'): VisionFinding[] {
+  const rows: VisionFinding[] = [];
+  const add = (id: string, label: string, status: VisionFinding['status'], detail: string) => rows.push({ id, label, status, detail });
+  add('faces', 'One clear face', m.faces === 1 ? 'clear' : 'fail', m.faces === 0 ? 'No face found. Face the camera in brighter, even light and try another photo.' : m.faces > 1 ? 'More than one face detected. The applicant must be alone.' : 'One face detected.');
+  if (m.faces !== 1) return rows;
+  const p = m.glasses;
+  add('glasses', 'Glasses', p === undefined || (p >= .2 && p < .8) ? 'review' : p >= .8 ? glassesRule === 'remove' ? 'fail' : 'review' : 'clear', p === undefined ? 'Eyewear detection could not run. Try again; no clear result is assumed.' : p >= .8 ? glassesRule === 'remove' ? 'Glasses detected. This standard route requires glasses removed. Retake the photo without them; an official medical-exception route must be handled with the authority.' : 'Glasses detected. Check that the applicable rules allow them and that eyes are unobstructed, with no tint or glare.' : p >= .2 ? 'The model is unsure about glasses. Inspect the eyes closely or use a clearer photo.' : 'No glasses detected. Thin or rimless frames may still be missed; check the eyes.');
+  if (m.colourChroma !== undefined) add('colour', 'Original colour photo', m.colourChroma < 3 ? 'fail' : 'clear', m.colourChroma < 3 ? 'This image appears black and white. Use a naturally coloured original; do not add colour digitally.' : 'Colour is present in the face area. Check that it matches the unaltered original.');
+  const tilted = Math.abs(m.roll || 0) > 5 || Math.abs(m.yaw || 0) > 8 || Math.abs(m.pitch || 0) > 10;
+  add('pose', 'Head straight & forward', tilted ? 'fail' : 'clear', tilted ? 'Head appears tilted or turned. Retake at eye level, looking straight ahead.' : 'No obvious head tilt or turn detected.');
+  add('expression', 'Neutral expression', (m.smile || 0) > .35 || (m.mouthOpen || 0) > .18 ? 'fail' : 'clear', (m.smile || 0) > .35 ? 'Smiling detected. Use a neutral expression with lips together.' : (m.mouthOpen || 0) > .18 ? 'Mouth appears open. Retake with lips gently closed.' : 'No obvious smile or open mouth detected.');
+  add('eyes', 'Eyes open', (m.blink || 0) > .55 ? 'fail' : 'clear', (m.blink || 0) > .55 ? 'An eye appears closed. Retake with both eyes open and visible.' : 'No obvious closed eye detected.');
+  const mean = m.backgroundMean || 0, spread = m.backgroundSpread || 0, chroma = m.backgroundChroma || 0;
+  const bad = spread > 28 || (background === 'white' ? mean < 205 || chroma > 28 : background === 'not-white' ? mean > 246 && chroma < 8 || mean < 130 : mean < 170);
+  add('background', 'Background & lighting', bad ? 'review' : 'clear', bad ? `The sampled background looks ${spread > 28 ? 'uneven or patterned' : background === 'not-white' && mean > 246 ? 'white, which this document forbids' : 'too dark or strongly coloured'}. Retake against the required plain background. Shadows and the full background still need visual review.` : 'The upper background samples look reasonably even. Check the entire background and facial lighting.');
+  add('sharpness', 'Image detail', (m.sharpness || 0) < 20 ? 'review' : 'clear', (m.sharpness || 0) < 20 ? 'The eye/face area may be soft or blurred. Inspect at full size and retake if necessary.' : 'The face has measurable image detail. This does not guarantee print sharpness.');
+  return rows;
+}

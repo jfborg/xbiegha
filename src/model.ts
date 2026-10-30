@@ -1,7 +1,8 @@
+import type { PassportSettings } from './passport';
 export type Mode = 'collage' | 'passport' | 'editor';
 export type Photo = { id: string; src: string; name: string; width: number; height: number; x: number; y: number; zoom: number; rotation: number; flip: boolean };
 export type Adjustments = { exposure: number; contrast: number; saturation: number; warmth: number; fade: number; vignette: number };
-export type Project = { id: string; name: string; mode: Mode; photos: Photo[]; ratio: string; layout: string; gap: number; padding: number; radius: number; background: string; caption: string; country: string; adjustments: Adjustments; updated: number; thumbnail?: string };
+export type Project = { id: string; name: string; mode: Mode; photos: Photo[]; ratio: string; layout: string; gap: number; padding: number; radius: number; background: string; caption: string; country: string; passport?: PassportSettings; adjustments: Adjustments; updated: number; thumbnail?: string };
 export const defaultAdjustments: Adjustments = { exposure: 0, contrast: 0, saturation: 0, warmth: 0, fade: 0, vignette: 0 };
 export const modes: Record<Mode, { title: string; short: string; description: string }> = {
   collage: { title: 'Make a collage', short: 'Collage', description: 'Your favourite moments, together.' },
@@ -16,14 +17,10 @@ export const presets = [
   { id: 'soft', name: 'Soft', values: { exposure: 10, contrast: -12, saturation: -8, warmth: 3, fade: 6, vignette: 0 } },
   { id: 'crisp', name: 'Crisp', values: { exposure: 2, contrast: 20, saturation: 8, warmth: -6, fade: 0, vignette: 0 } },
 ];
-export const countries: Record<string, { name: string; width: number; height: number; source: string; note: string }> = {
-  mt: { name: 'Malta · 35 × 45 mm', width: 35, height: 45, source: 'https://identita.gov.mt/frequently-asked-questions/passport/', note: 'White background, neutral expression, closed mouth, no glasses or shadows. Malta normally captures adult passport photos at the Passport Office; check whether a supplied photo applies to your application.' },
-  uk: { name: 'United Kingdom · 35 × 45 mm', width: 35, height: 45, source: 'https://www.gov.uk/photos-for-passports/photo-requirements', note: 'Plain cream or light grey background. Head height 29–34 mm. No digital enhancement. This is a printed-photo preset; online applications have different requirements.' },
-  us: { name: 'United States · 2 × 2 in', width: 50.8, height: 50.8, source: 'https://travel.state.gov/en/passports/apply/help/photos.html', note: 'White or off-white background. Head height 25–35 mm. No glasses or appearance-altering edits. This preset prepares a printed photo, not a verified online submission.' },
-};
+export { countries } from './passport';
 export const ratios = [{ id: '1:1', name: 'Square', value: 1 }, { id: '4:5', name: 'Portrait', value: .8 }, { id: '3:2', name: 'Landscape', value: 1.5 }, { id: '9:16', name: 'Story', value: 9 / 16 }, { id: 'original', name: 'Original', value: 0 }];
 export const samplePaths = ['/samples/coast.jpg', '/samples/village.jpg', '/samples/lake.jpg', '/samples/mountain.jpg'];
-export function createProject(mode: Mode): Project { return { id: crypto.randomUUID(), name: mode === 'collage' ? 'Untitled collage' : mode === 'passport' ? 'My passport photo' : 'Untitled edit', mode, photos: [], ratio: mode === 'editor' ? 'original' : '1:1', layout: 'grid', gap: 12, padding: 24, radius: 0, background: '#fffdf7', caption: '', country: 'mt', adjustments: { ...defaultAdjustments }, updated: Date.now() }; }
+export function createProject(mode: Mode): Project { return { id: crypto.randomUUID(), name: mode === 'collage' ? 'Untitled collage' : mode === 'passport' ? 'My passport photo' : 'Untitled edit', mode, photos: [], ratio: mode === 'editor' ? 'original' : '1:1', layout: 'grid', gap: 12, padding: 24, radius: 0, background: '#fffdf7', caption: '', country: 'ae-passport', adjustments: { ...defaultAdjustments }, updated: Date.now() }; }
 export async function loadPhoto(src: string, name: string): Promise<Photo> { const image = await imageFromSource(src); return { id: crypto.randomUUID(), src, name, width: image.naturalWidth, height: image.naturalHeight, x: 0, y: 0, zoom: 1, rotation: 0, flip: false }; }
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
 export function imageFromSource(src: string): Promise<HTMLImageElement> { const existing = imageCache.get(src); if (existing) return existing; const promise = new Promise<HTMLImageElement>((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => { imageCache.delete(src); reject(new Error('This image could not be opened. Try a JPEG, PNG, or WebP file.')); }; image.src = src; }); imageCache.set(src, promise); if (imageCache.size > 40) imageCache.delete(imageCache.keys().next().value!); return promise; }
