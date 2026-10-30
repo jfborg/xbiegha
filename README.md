@@ -65,3 +65,11 @@ Custom Xbiegha logo: `public/logo.svg`. Fonts: DM Sans and Newsreader, distribut
 - `photo-1494790108377-be9c29b29330` — portrait
 
 No subscription-app source code, logos, templates, or paid assets are included.
+
+## Studio UI refresh (30 October 2026)
+
+The interface uses Portico Events’ published palette: navy `#0b1826`, copper `#bb8460`, light copper `#e2ad85`, cream `#f5d4b5` and paper `#f2eadc`. Small copper text uses a darker shade for contrast on light backgrounds. The Xbiegha symbol remains its own mark.
+
+The responsive studio keeps all five navigation choices labelled on phones, provides a direct Controls shortcut, and makes editable backups available in the controls footer. Collage replacement updates only the selected photo; the other images and order are preserved. Spacing controls now show percentages of canvas width, matching the renderer’s scaling.
+
+Document review prioritises detected problems, groups clear findings behind an expandable summary, keeps the chosen authority route visible, and groups measurements and human confirmations with progress counts. No official requirements, export guards, or legal acknowledgements were removed. Brand colours are for the interface and optional collage backgrounds, never document-photo background replacement.
