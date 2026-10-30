@@ -11,12 +11,13 @@ A personal photo studio for collages, passport photo preparation, and everyday e
 - Measured head/crown/chin guides, source-resolution and recency checks, explicit application upload limits, exact JPEG pixel dimensions and physically sized 4 × 6 inch PDF sheets.
 - Versioned terms and photo limitations, privacy notice, contextual warnings and a required document-export acknowledgement.
 - PNG, JPEG and WebP exports up to 3,600 pixels on the long edge, without watermarks.
+- Save to Photos opens the device share sheet with the finished JPEG or PNG. On iPhone, choose Save Image / Save to Photos. Unsupported browsers offer a full-resolution image to touch and hold or save, alongside the normal download.
 - Undo/redo, browser-local IndexedDB project saving, editable `.xbiegha` backups, and restore/import.
 - Responsive desktop and mobile interface, self-hosted fonts, accessible labels, keyboard shortcuts, reduced-motion support, and a custom SVG logo.
 
 ## Privacy and storage
 
-Image processing happens on the device. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Save project** for an independent editable backup.
+Image processing happens on the device. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. If you choose Save to Photos, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
 
 ## Run
 

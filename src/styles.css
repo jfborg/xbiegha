@@ -167,3 +167,17 @@ input[type=checkbox] { accent-color: var(--accent); }
 .inspector-footer .text-link { font-size: 10px; gap: 4px; }
 .inspector-footer .icon-button { min-width: 30px; width: 30px; height: 36px; }
 .footer-help { padding: 4px 0; font-size: inherit; text-decoration: underline; text-underline-offset: 3px; min-height: 28px; }
+/* Native photo-library handoff, with a local image fallback. */
+.save-photos { border-top: 1px solid var(--line); padding-top: 17px; margin-top: 20px; }
+.save-photos .export-footnote { display: block; margin: 10px 0; }
+.save-photos .export-footnote strong { font-weight: 600; color: var(--ink); }
+.photo-save-message { font-size: 12px; line-height: 1.7; color: var(--muted); margin-top: 12px; }
+.photo-save-message.error { color: var(--danger); }
+.photo-save-fallback { margin-top: 15px; padding: 15px; background: var(--paper); border-radius: 12px; }
+.photo-save-fallback img { max-height: 300px; margin: auto; object-fit: contain; -webkit-touch-callout: default; user-select: auto; }
+.photo-save-fallback p { font-size: 11px; line-height: 1.8; color: var(--muted); margin-top: 14px; }
+@media (max-width: 600px) {
+  .export-thumbnail { flex-direction: row; min-height: 0; padding: 12px; gap: 16px; }
+  .export-thumbnail img { width: auto; max-width: 100px; max-height: 90px; }
+  .export-thumbnail > span { flex: 1; text-align: left; }
+}
