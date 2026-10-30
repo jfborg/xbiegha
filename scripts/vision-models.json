@@ -6,7 +6,7 @@
   },
   {
     "file": "glasses.onnx",
-    "url": "https://cdn.framefind.moraxh.dev/models/glasses/v1/glasses.onnx",
+    "url": "https://raw.githubusercontent.com/moraxh/FrameFind/3c69676cbcd44a47ab083b541b56c050dbc0b1b5/models/glasses/v1/glasses.onnx",
     "sha256": "66f75c686974a04bf956d0ed6411315309afcabd36c400edec743953adafccb9"
   }
 ]

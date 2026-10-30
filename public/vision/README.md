@@ -12,5 +12,5 @@ All are served from this website at runtime. No photograph, landmark, probabilit
 
 - `face_landmarker.task`: https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
   SHA-256: `64184e229b263107bc2b804c6625db1341ff2bb731874b0bcc2fe6544e0bc9ff`
-- `glasses.onnx`: https://cdn.framefind.moraxh.dev/models/glasses/v1/glasses.onnx
+- `glasses.onnx`: https://raw.githubusercontent.com/moraxh/FrameFind/3c69676cbcd44a47ab083b541b56c050dbc0b1b5/models/glasses/v1/glasses.onnx
   SHA-256: `66f75c686974a04bf956d0ed6411315309afcabd36c400edec743953adafccb9`
