@@ -4,20 +4,20 @@ A personal photo studio for collages, passport photo preparation, and everyday e
 
 ## Features
 
-- Collages with 1–8 photos, three responsive arrangements, four aspect ratios, custom backgrounds, spacing, rounded corners, and captions.
-- Photo cropping, repositioning, zoom, rotation, mirroring, exposure, contrast, saturation, warmth, fade, vignette, and six original colour presets.
+- Collages with 1–8 photos, three responsive arrangements, four aspect ratios, custom backgrounds, spacing, rounded corners, and captions. A visible Reorder photos control opens an arrangement list: use arrows on phones or drag on desktop; crops stay with each photo and undo/redo is supported.
+- Photo cropping, repositioning, zoom, rotation, mirroring, exposure, contrast, saturation, warmth, fade, vignette, and 30 original looks across Everyday, Sunlit, Film, Cool, Moody and Black & White. Search, full-strength canvas previews, adjustable intensity, tint and stable film grain are included.
 - 20 document/submission profiles across 14 countries and territories, including UAE passport, Emirates ID, Dubai/RTA, Abu Dhabi/TAMM and other emirates/MOI driving routes. Printed and digital contracts are separate.
 - Automatic on-device face, glasses, expression, pose, eye, colour, background and detail screening after import/capture and crop changes. Failures lock document exports; uncertain findings require explicit personal review.
 - Measured head/crown/chin guides, source-resolution and recency checks, explicit application upload limits, exact JPEG pixel dimensions and physically sized 4 × 6 inch PDF sheets.
 - Versioned terms and photo limitations, privacy notice, contextual warnings and a required document-export acknowledgement.
 - PNG, JPEG and WebP exports up to 3,600 pixels on the long edge, without watermarks.
-- Save to Photos opens the device share sheet with the finished JPEG or PNG. On iPhone, choose Save Image / Save to Photos. Unsupported browsers offer a full-resolution image to touch and hold or save, alongside the normal download.
+- Save to Photos opens a full-resolution image with iPhone touch-and-hold instructions. Choose Save to Photos / Add to Photos / Save Image from the native image menu. Optional sharing is separate; Download image file is explicitly labelled as a Files / Downloads destination. Both routes use the same export validation.
 - Undo/redo, browser-local IndexedDB project saving, editable `.xbiegha` backups, and restore/import.
 - Responsive desktop and mobile interface, self-hosted fonts, accessible labels, keyboard shortcuts, reduced-motion support, and a custom SVG logo.
 
 ## Privacy and storage
 
-Image processing happens on the device. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. If you choose Save to Photos, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
+Image processing happens on the device. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. Save to Photos prepares a local image for the browser’s native image menu. If you choose More sharing options, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
 
 ## Run
 
@@ -74,3 +74,9 @@ The interface uses Portico Events’ published palette: navy `#0b1826`, copper `
 The responsive studio keeps all five navigation choices labelled on phones, provides a direct Controls shortcut, and makes editable backups available in the controls footer. Collage replacement updates only the selected photo; the other images and order are preserved. Spacing controls now show percentages of canvas width, matching the renderer’s scaling.
 
 Document review prioritises detected problems, groups clear findings behind an expandable summary, keeps the chosen authority route visible, and groups measurements and human confirmations with progress counts. No official requirements, export guards, or legal acknowledgements were removed. Brand colours are for the interface and optional collage backgrounds, never document-photo background replacement.
+
+## Looks library and photo-library saving
+
+All 30 looks are original parameter recipes. The gallery, working canvas, saved thumbnails and exports share one renderer. Intensity ranges from 0–100%; choosing Original resets colour while keeping the crop and layout. Tint and deterministic grain supplement the original six adjustments. Legacy six-field projects and backups remain supported; look identity and strength travel with new backups. Passport mode bypasses all colour effects.
+
+The photo-library action displays an actual full-resolution JPEG/PNG image with a data URL, separate from file downloading. Native touch-and-hold and sharing menus depend on the device/browser. Xbiegha does not claim the image was saved or write directly into a photo library. If an embedded browser omits saving, use Safari. Physical iPhone end-to-end verification is still needed.
