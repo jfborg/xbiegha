@@ -1,8 +1,11 @@
 # Xbiegha
 
-A personal photo studio for collages, passport photo preparation, and everyday editing. React, TypeScript, Vite, and the browser Canvas API. Designed for **xbiegha.com**, hosted on Vercel.
+A personal photo studio for collages, passport photo preparation, everyday editing, and slideshows. React, TypeScript, Vite, and the browser Canvas API. Designed for **xbiegha.com**, hosted on Vercel.
 
 ## Features
+
+- Slideshow studio: up to 30 photos, per-photo timing (1–10 seconds), captions, reorder, four transitions, gentle motion, three visual themes, 30 colour looks, and 16:9 / 9:16 / 1:1 / 4:5 formats. Import your own soundtrack (20 MB / 10 minutes), set its start and volume, and loop it to fit with automatic fades.
+- On-device 30 fps video export at 1920px or 1280px long edge. Mediabunny/WebCodecs is loaded only for music import or video export. MP4 (H.264/AAC) and WebM (VP8/Opus) are offered only when this browser can encode the selected video/audio combination. A prepared file opens native sharing from a direct user gesture; iPhone Save Video availability depends on browser and format. Download is explicitly labelled as Files / Downloads.
 
 - Collages with 1–8 photos, three responsive arrangements, four aspect ratios, custom backgrounds, spacing, rounded corners, and captions. A visible Reorder photos control opens an arrangement list: use arrows on phones or drag on desktop; crops stay with each photo and undo/redo is supported.
 - Photo cropping, repositioning, zoom, rotation, mirroring, exposure, contrast, saturation, warmth, fade, vignette, and 30 original looks across Everyday, Sunlit, Film, Cool, Moody and Black & White. Search, full-strength canvas previews, adjustable intensity, tint and stable film grain are included.
@@ -17,7 +20,7 @@ A personal photo studio for collages, passport photo preparation, and everyday e
 
 ## Privacy and storage
 
-Image processing happens on the device. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. Save to Photos prepares a local image for the browser’s native image menu. If you choose More sharing options, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
+Image, slideshow and audio processing happens on the device. Slideshow imports are resized to at most 2560px on the long edge to keep local storage and rendering practical; original files are untouched. Imported soundtrack data is included in local projects and editable backups. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. Save to Photos prepares a local image for the browser’s native image menu. If you choose More sharing options, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
 
 ## Run
 

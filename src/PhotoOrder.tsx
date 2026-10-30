@@ -3,7 +3,7 @@ import type { PointerEvent } from 'react';
 import { ArrowDown, ArrowUp, Check, GripVertical } from 'lucide-react';
 import type { Photo } from './model';
 
-export function PhotoOrder({ photos, onMove, onDone }: { photos: Photo[]; onMove: (from: number, to: number) => void; onDone: () => void }) {
+export function PhotoOrder({ photos, onMove, onDone, slideshow = false }: { photos: Photo[]; onMove: (from: number, to: number) => void; onDone: () => void; slideshow?: boolean }) {
   const [dragged, setDragged] = useState<string | null>(null);
   const [over, setOver] = useState<string | null>(null);
   const [message, setMessage] = useState('');
@@ -24,8 +24,8 @@ export function PhotoOrder({ photos, onMove, onDone }: { photos: Photo[]; onMove
     setMessage(`${photos[from].name} moved to position ${to + 1} of ${photos.length}.`);
   }
   return <>
-    <p className="photo-order-help">Use the arrows to move a photo. On a computer, drag a photo by its dotted handle. The first photo fills the first layout slot.</p>
-    <ol className="photo-order-list" aria-label="Collage photo order">{photos.map((photo, i) => <li key={photo.id} data-photo-order-id={photo.id} className={`${dragged === photo.id ? 'dragging' : ''} ${over === photo.id ? 'drop-target' : ''}`}>
+    <p className="photo-order-help">Use the arrows to move a photo. On a computer, drag a photo by its dotted handle. {slideshow ? 'Photos play in the order shown below.' : 'The first photo fills the first layout slot.'}</p>
+    <ol className="photo-order-list" aria-label={slideshow ? "Slideshow photo order" : "Collage photo order"}>{photos.map((photo, i) => <li key={photo.id} data-photo-order-id={photo.id} className={`${dragged === photo.id ? 'dragging' : ''} ${over === photo.id ? 'drop-target' : ''}`}>
       <span className="photo-order-grip" title="Drag to reorder; arrow buttons are also available" aria-hidden="true" onPointerDown={e => { if (e.button !== 0) return; e.preventDefault(); e.currentTarget.setPointerCapture(e.pointerId); dragId.current = photo.id; dropId.current = photo.id; setDragged(photo.id); }} onPointerMove={dragMove} onPointerUp={e => dragEnd(e)} onPointerCancel={e => dragEnd(e, true)}><GripVertical size={16}/></span>
       <div className="photo-order-thumb"><img src={photo.src} alt={photo.name} draggable={false}/><span>{i + 1}</span></div>
       <span className="photo-order-name"><strong>Photo {i + 1}</strong><small title={photo.name}>{photo.name}</small></span>

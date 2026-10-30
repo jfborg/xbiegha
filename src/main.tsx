@@ -8,4 +8,5 @@ import '@fontsource/newsreader/400.css';
 import '@fontsource/newsreader/400-italic.css';
 import App from './App';
 import './styles.css';
+import './slideshow.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
