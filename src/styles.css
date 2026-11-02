@@ -256,3 +256,6 @@ input[type=checkbox] { accent-color: var(--accent); }
   .look-current p,.look-intensity>span { font-size: 12px; }.look-cards>button>span { font-size: 11px; }
   .look-current .look-intensity input { height: 32px; }.photo-save-view .photo-library-image { max-height: 300px; }
 }
+
+.recovery-notice { max-width: 650px; padding: 20px 24px; background: #f2eadc; border-radius: 16px; color: #0b1826; font-size: 13px; line-height: 1.7; }
+.recovery-notice strong { font-size: 15px; }.recovery-notice p { margin: 5px 0 0; }.recovery-notice a,.recovery-notice button { color: #754d30; text-decoration: underline; text-underline-offset: 3px; }.recovery-notice button { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }

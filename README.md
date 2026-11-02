@@ -1,6 +1,6 @@
-# Xbiegha
+# Xbieha
 
-A personal photo studio for collages, passport photo preparation, everyday editing, and slideshows. React, TypeScript, Vite, and the browser Canvas API. Designed for **xbiegha.com**, hosted on Vercel.
+A personal photo studio for collages, passport photo preparation, everyday editing, and slideshows. React, TypeScript, Vite, and the browser Canvas API. Designed for **xbieha.com**, hosted on Vercel.
 
 ## Features
 
@@ -15,7 +15,7 @@ A personal photo studio for collages, passport photo preparation, everyday editi
 - Versioned terms and photo limitations, privacy notice, contextual warnings and a required document-export acknowledgement.
 - PNG, JPEG and WebP exports up to 3,600 pixels on the long edge, without watermarks.
 - Save to Photos opens a full-resolution image with iPhone touch-and-hold instructions. Choose Save to Photos / Add to Photos / Save Image from the native image menu. Optional sharing is separate; Download image file is explicitly labelled as a Files / Downloads destination. Both routes use the same export validation.
-- Undo/redo, browser-local IndexedDB project saving, editable `.xbiegha` backups, and restore/import.
+- Undo/redo, browser-local IndexedDB project saving, editable `.xbieha` backups, and restore/import (including legacy `.xbiegha` files).
 - Responsive desktop and mobile interface, self-hosted fonts, accessible labels, keyboard shortcuts, reduced-motion support, and a custom SVG logo.
 
 ## Privacy and storage
@@ -60,7 +60,7 @@ JPEG, PNG, WebP and AVIF, up to 35 MB / 50 megapixels per image. HEIC should be 
 
 ## Design assets
 
-Custom Xbiegha logo: `public/logo.svg`. Fonts: DM Sans and Newsreader, distributed through Fontsource under their included open font licences. Bundled demonstration photographs are from Unsplash and governed by the [Unsplash licence](https://unsplash.com/license):
+Custom Xbieha logo: `public/logo.svg`. Fonts: DM Sans and Newsreader, distributed through Fontsource under their included open font licences. Bundled demonstration photographs are from Unsplash and governed by the [Unsplash licence](https://unsplash.com/license):
 
 - `photo-1533105079780-92b9be482077` — coast
 - `photo-1516483638261-f4dbaf036963` — coastal village
@@ -72,7 +72,7 @@ No subscription-app source code, logos, templates, or paid assets are included.
 
 ## Studio UI refresh (30 October 2026)
 
-The interface uses Portico Events’ published palette: navy `#0b1826`, copper `#bb8460`, light copper `#e2ad85`, cream `#f5d4b5` and paper `#f2eadc`. Small copper text uses a darker shade for contrast on light backgrounds. The Xbiegha symbol remains its own mark.
+The interface uses Portico Events’ published palette: navy `#0b1826`, copper `#bb8460`, light copper `#e2ad85`, cream `#f5d4b5` and paper `#f2eadc`. Small copper text uses a darker shade for contrast on light backgrounds. The Xbieha symbol remains its own mark.
 
 The responsive studio keeps all five navigation choices labelled on phones, provides a direct Controls shortcut, and makes editable backups available in the controls footer. Collage replacement updates only the selected photo; the other images and order are preserved. Spacing controls now show percentages of canvas width, matching the renderer’s scaling.
 
@@ -82,4 +82,10 @@ Document review prioritises detected problems, groups clear findings behind an e
 
 All 30 looks are original parameter recipes. The gallery, working canvas, saved thumbnails and exports share one renderer. Intensity ranges from 0–100%; choosing Original resets colour while keeping the crop and layout. Tint and deterministic grain supplement the original six adjustments. Legacy six-field projects and backups remain supported; look identity and strength travel with new backups. Passport mode bypasses all colour effects.
 
-The photo-library action displays an actual full-resolution JPEG/PNG image with a data URL, separate from file downloading. Native touch-and-hold and sharing menus depend on the device/browser. Xbiegha does not claim the image was saved or write directly into a photo library. If an embedded browser omits saving, use Safari. Physical iPhone end-to-end verification is still needed.
+The photo-library action displays an actual full-resolution JPEG/PNG image with a data URL, separate from file downloading. Native touch-and-hold and sharing menus depend on the device/browser. Xbieha does not claim the image was saved or write directly into a photo library. If an embedded browser omits saving, use Safari. Physical iPhone end-to-end verification is still needed.
+
+## Domain migration
+
+The public brand and canonical address are Xbieha at https://xbieha.com. The existing GitHub repository and Vercel project retain their original internal names. Old-domain requests permanently redirect to the same path at the new domain, except `/recover/`, a read-only local-project recovery utility. Projects are browser-origin scoped: users download backups on https://xbiegha.com/recover/ in their original browser and import them on Xbieha. No photos or projects are uploaded by this flow. The IndexedDB name `xbiegha-studio` stays unchanged for compatibility.
+
+The custom X symbol is configured as an SVG favicon, 192px and 512px install icons (including a maskable icon), and a 180px Apple touch icon.

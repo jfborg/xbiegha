@@ -35,7 +35,7 @@ export function SaveToPhotos({ project, format, size, blocked }: {
       // native image menu; a download link instead saves to Files on iPhone.
       const url = await imageSource(blob);
       if (!active) return;
-      const name = project.name.trim().replace(/[^a-zA-Z0-9 _-]/g, '').replace(/\s+/g, '-').slice(0,70) || 'xbiegha-image';
+      const name = project.name.trim().replace(/[^a-zA-Z0-9 _-]/g, '').replace(/\s+/g, '-').slice(0,70) || 'xbieha-image';
       const file = new File([blob], `${name}.${type === 'jpeg' ? 'jpg' : 'png'}`, { type: blob.type });
       setPrepared({ project, type, size, file, url });
     }).catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Could not prepare this image. Try a smaller export.'); });
@@ -73,7 +73,7 @@ export function SaveToPhotos({ project, format, size, blocked }: {
       <img className="photo-library-image" src={ready.url} alt="Your full-resolution image. Touch and hold this photo to save to Photos."/>
       <button type="button" className="text-link photo-save-back" onClick={() => setOpened(false)}>Back to export options</button>
       <p className="photo-save-size">Full resolution · {type === 'jpeg' ? 'JPEG' : 'PNG'} · no watermark</p>
-      <p className="photo-save-help">If you see a preview first, open its menu or tap Share, then Save Image. If Photos is missing in an in-app browser, open <strong>xbiegha.com in Safari</strong> and try again. On a computer, right-click the photo to save.</p>
+      <p className="photo-save-help">If you see a preview first, open its menu or tap Share, then Save Image. If Photos is missing in an in-app browser, open <strong>xbieha.com in Safari</strong> and try again. On a computer, right-click the photo to save.</p>
       <button className="secondary-button full" disabled={sharing} onClick={share}><Share2 size={15}/>{sharing ? 'Share sheet open…' : 'More sharing options'}</button>
       {message && <p className="photo-save-message" role="status">{message}</p>}
     </div>}
