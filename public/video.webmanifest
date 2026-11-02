@@ -1,0 +1,25 @@
+{
+  "id": "/?tool=video",
+  "name": "Xbieha Video Studio",
+  "short_name": "Xbieha Video",
+  "start_url": "/?tool=video",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8f4ee",
+  "theme_color": "#0b1826",
+  "description": "Cut videos, arrange clips and stitch them together with transitions.",
+  "icons": [
+    {
+      "src": "/video-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/video-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

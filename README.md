@@ -74,7 +74,7 @@ No subscription-app source code, logos, templates, or paid assets are included.
 
 The interface uses Portico Events’ published palette: navy `#0b1826`, copper `#bb8460`, light copper `#e2ad85`, cream `#f5d4b5` and paper `#f2eadc`. Small copper text uses a darker shade for contrast on light backgrounds. The Xbieha symbol remains its own mark.
 
-The responsive studio keeps all five navigation choices labelled on phones, provides a direct Controls shortcut, and makes editable backups available in the controls footer. Collage replacement updates only the selected photo; the other images and order are preserved. Spacing controls now show percentages of canvas width, matching the renderer’s scaling.
+The responsive studio keeps all seven navigation choices labelled on phones, provides a direct Controls shortcut, and makes editable backups available in the controls footer. Collage replacement updates only the selected photo; the other images and order are preserved. Spacing controls now show percentages of canvas width, matching the renderer’s scaling.
 
 Document review prioritises detected problems, groups clear findings behind an expandable summary, keeps the chosen authority route visible, and groups measurements and human confirmations with progress counts. No official requirements, export guards, or legal acknowledgements were removed. Brand colours are for the interface and optional collage backgrounds, never document-photo background replacement.
 
@@ -89,3 +89,16 @@ The photo-library action displays an actual full-resolution JPEG/PNG image with 
 The public brand and canonical address are Xbieha at https://xbieha.com. The existing GitHub repository and Vercel project retain their original internal names. Old-domain requests permanently redirect to the same path at the new domain, except `/recover/`, a read-only local-project recovery utility. Projects are browser-origin scoped: users download backups on https://xbiegha.com/recover/ in their original browser and import them on Xbieha. No photos or projects are uploaded by this flow. The IndexedDB name `xbiegha-studio` stays unchanged for compatibility.
 
 The custom X symbol is configured as an SVG favicon, 192px and 512px install icons (including a maskable icon), and a 180px Apple touch icon.
+
+
+## Video editor
+
+Open `/?tool=video`, the Video editor sidebar item, or its studio card. This standalone tool is lazy loaded and does not change the existing photo/slideshow project format. It cuts and trims original footage, orders and duplicates clips, removes unwanted parts, and applies a straight cut, cross dissolve, fade through black, slide left or wipe right per join. Overlap is capped to half of both neighbouring clips so three clips never overlap. Source audio follows trim/order/volume and transition envelopes. Preview and export share the same media engine. Original file timestamps and rotation metadata are respected.
+
+The current draft and original source File objects save in the separate `xbieha-video` IndexedDB database. New movie replaces the draft after confirmation. Undo/redo is session-local; source files are retained for undo until New movie. Browser eviction or storage exhaustion can prevent recovery, and the interface reports save failures. No source video or audio leaves the device.
+
+Limits: 12 source files, 500 MB each, 1 GB combined; 40 clips; source duration up to 60 minutes; finished movie up to 10 minutes. A long source can be imported and trimmed, while export stays disabled until the movie fits. MP4/H.264/AAC and WebM/VP8/Opus availability is detected locally. Output is 30 fps at a longest edge of 1280 or 1920 pixels, with original, landscape, portrait or square framing. Videos are re-encoded; HDR colour and specialist multichannel audio are not production mastering features. Preview/export need a current browser with supported WebCodecs.
+
+`public/video-icon.svg` is a custom navy/copper film-and-cut symbol. It is integrated into the editor and navigation, has 192px/512px install PNGs and a 180px Apple touch icon, and is configured in the tool-specific `video.webmanifest`. The main install manifest offers a Video editor shortcut.
+
+Verification: `tests/video.test.mjs` covers cut boundaries, overlap duration, audio gain envelopes, clip reordering and output dimensions. The development-only `tests/video-browser.html` generates known video/audio scenes, checks all five transitions, decodes actual MP4 exports, and verifies cancellation. It is not copied to the production build.

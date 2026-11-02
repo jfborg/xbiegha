@@ -1,5 +1,5 @@
 {
-  "name": "Xbieha Photo Studio",
+  "name": "Xbieha Creative Studio",
   "short_name": "Xbieha",
   "start_url": "/",
   "display": "standalone",
@@ -20,5 +20,19 @@
     }
   ],
   "id": "/",
-  "scope": "/"
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "Video editor",
+      "short_name": "Video",
+      "url": "/?tool=video",
+      "icons": [
+        {
+          "src": "/video-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }
