@@ -1,3 +1,4 @@
+import { fileName } from './fileName.ts';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, Copy, Film, GripVertical, LockKeyhole, Pause, Play, Plus, Redo2, Save, Scissors, Trash2, Undo2, Volume2, VolumeX, X } from 'lucide-react';
 import { activeEntries, clipLength, MAX_CLIPS, MAX_MOVIE, MIN_CLIP, movieDuration, splitClip, transitions, videoSize, videoTime, videoTimeline } from './videoModel';
@@ -209,7 +210,7 @@ function VideoExport({ edit, assets, onClose }: { edit: VideoEdit; assets: Video
   useEffect(() => () => { if (result) URL.revokeObjectURL(result.url); }, [result]);
   async function render() {
     setError(''); setWorking(true); setProgress(0); const controller = new AbortController(); abort.current = controller;
-    try { const blob = await exportVideoEdit(edit, assets, longest, format, sound, controller.signal, setProgress); setResult({ blob, url: URL.createObjectURL(blob), name: `${(edit.name || 'My movie').replace(/[^\p{L}\p{N} _.-]/gu, '-').slice(0, 80)}.${format}` }); }
+    try { const blob = await exportVideoEdit(edit, assets, longest, format, sound, controller.signal, setProgress); setResult({ blob, url: URL.createObjectURL(blob), name: `${fileName(edit.name, 'My movie')}.${format}` }); }
     catch (e) { setError(controller.signal.aborted ? 'Export cancelled. Your edits are safe.' : e instanceof Error ? e.message : 'The video could not be exported. Try 720p or a shorter movie.'); }
     finally { setWorking(false); abort.current = null; }
   }

@@ -1,3 +1,4 @@
+import { fileName } from './fileName.ts';
 import { createBackup, isSupportedBackup } from './backup';
 import { SlideshowStudio } from './SlideshowStudio';
 import { lazy, Suspense } from 'react';
@@ -110,7 +111,7 @@ function App() {
     finally { setBusy(false); replaceRef.current=false; if(fileRef.current)fileRef.current.value=''; }
   }
   async function demo(mode: Mode = 'collage') { setBusy(true); try { const paths = mode === 'slideshow' ? samplePaths : mode === 'collage' ? samplePaths.slice(0, 3) : [mode === 'passport' ? '/samples/portrait.jpg' : samplePaths[0]]; const photos = await Promise.all(paths.map((src, i) => loadPhoto(src, `Studio sample ${i + 1}`))); const p = createProject(mode); openProject({ ...p, photos, name: mode === 'collage' ? 'A Mediterranean feeling' : mode === 'passport' ? 'Passport photo · sample' : 'A slower kind of summer', caption: mode === 'slideshow' ? 'A slower kind of summer' : '', layout: 'hero', ratio: mode === 'slideshow' ? '16:9' : mode === 'editor' ? 'original' : '4:5' }); } catch (e) { notify(e instanceof Error ? e.message : 'Sample images could not be loaded.'); } finally { setBusy(false); } }
-  function backup() { if (!project) return; downloadBlob(new Blob([JSON.stringify(createBackup(project))], { type: 'application/json' }), `${safeName(project.name)}.xbieha`); notify('Project backup downloaded. Keep it to move your work between devices.'); }
+  function backup() { if (!project) return; downloadBlob(new Blob([JSON.stringify(createBackup(project))], { type: 'application/json' }), `${fileName(project.name, 'xbieha-image')}.xbieha`); notify('Project backup downloaded. Keep it to move your work between devices.'); }
   async function importBackup(e: ChangeEvent<HTMLInputElement>) { const file = e.target.files?.[0]; if (!file) return; setBusy(true); try { if (file.size > 100 * 1024 * 1024) throw new Error('Project backups must be under 100 MB.'); const data = JSON.parse(await file.text()); const p = data.project as Project; if (!isSupportedBackup(data) || !p || !['collage','passport','editor','slideshow'].includes(p.mode) || !Array.isArray(p.photos) || p.photos.length > (p.mode === 'slideshow' ? MAX_SLIDES : 8) || typeof p.name !== 'string' || !['grid','hero','strips'].includes(p.layout) || !(p.mode === 'slideshow' ? slideRatios : ratios).some(r => r.id === p.ratio) || !countries[p.country] || !/^#[0-9a-f]{6}$/i.test(p.background) || typeof p.caption !== 'string') throw new Error('This is not a supported Xbieha project backup.'); for (const key of ['gap','padding','radius'] as const) if (!Number.isFinite(p[key]) || p[key] < 0 || p[key] > 100) throw new Error('Invalid layout in this backup.'); p.adjustments = readAdjustments(p.adjustments); if (p.mode === 'slideshow') p.slideshow = readSlideshow(p.slideshow); for (const photo of p.photos) { if (typeof photo.name !== 'string' || photo.name.length > 500 || (photo.duration !== undefined && (!Number.isFinite(photo.duration) || photo.duration < 1 || photo.duration > 10)) || (photo.caption !== undefined && (typeof photo.caption !== 'string' || photo.caption.length > 100)) || typeof photo.src !== 'string' || !(/^(data:image\/(jpeg|png|webp|avif);base64,)/.test(photo.src) || [...samplePaths,'/samples/portrait.jpg'].includes(photo.src)) || !Number.isFinite(photo.zoom) || photo.zoom < 1 || photo.zoom > 4 || !Number.isFinite(photo.x) || Math.abs(photo.x) > 1 || !Number.isFinite(photo.y) || Math.abs(photo.y) > 1 || ![0,90,180,270].includes(photo.rotation)) throw new Error('Invalid photo in this backup.'); const image = await imageFromSource(photo.src); photo.width = image.naturalWidth; photo.height = image.naturalHeight; if (photo.width * photo.height > 50000000) throw new Error('A photo in this backup is too large.'); photo.id = crypto.randomUUID(); }
     if (p.passport) {
       const ps = p.passport;
@@ -125,11 +126,11 @@ function App() {
     setExporting(true);
     try {
       await document.fonts.ready;
-      if (sheet) { if (!docDimensions.printable) throw new Error('This digital route does not define a printed photo size.'); downloadBlob(await exportSheet(project), `${safeName(project.name)}-4x6-print-sheet.pdf`); }
+      if (sheet) { if (!docDimensions.printable) throw new Error('This digital route does not define a printed photo size.'); downloadBlob(await exportSheet(project), `${fileName(project.name, 'xbieha-image')}-4x6-print-sheet.pdf`); }
       else {
         const type = project.mode === 'passport' ? 'jpeg' : format;
         const blob = await prepareImageExport(project, type, exportSize);
-        downloadBlob(blob, `${safeName(project.name)}.${type === 'jpeg' ? 'jpg' : type}`);
+        downloadBlob(blob, `${fileName(project.name, 'xbieha-image')}.${type === 'jpeg' ? 'jpg' : type}`);
       }
       notify(sheet ? 'Print sheet downloaded. Print at Actual size / 100% on 4 × 6 inch photo paper.' : project.mode === 'passport' ? 'Checked JPEG exported. Keep the original and follow the authority’s submission instructions.' : 'Made it yours. Your image has been downloaded.'); setModal(null);
     } catch (e) { notify(e instanceof Error ? e.message : 'Could not export. Try a smaller image size.'); } finally { setExporting(false); }
@@ -183,5 +184,4 @@ function App() {
     {removeId && <Modal title="Let this project go?" subtitle="This removes the saved project from this browser. Download a project backup first if you want to keep it." onClose={() => setRemoveId(null)}><div className="modal-actions"><button className="secondary-button" onClick={() => setRemoveId(null)}>Keep it</button><button className="primary-button" onClick={async () => { try { await deleteProject(removeId); setProjects(p => p.filter(i => i.id !== removeId)); setRemoveId(null); notify('Project removed from this browser.'); } catch { notify('Could not remove this project.'); } }}>Remove project</button></div></Modal>}
   </div>;
 }
-function safeName(name: string) { return name.trim().replace(/[^a-zA-Z0-9 _-]/g,'').replace(/\s+/g,'-').slice(0,70) || 'xbieha-image'; }
 export default App;

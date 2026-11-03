@@ -1,3 +1,4 @@
+import { fileName } from './fileName.ts';
 import { useEffect, useRef, useState } from 'react';
 import { ImageDown, Share2 } from 'lucide-react';
 import type { Project } from './model';
@@ -35,7 +36,7 @@ export function SaveToPhotos({ project, format, size, blocked }: {
       // native image menu; a download link instead saves to Files on iPhone.
       const url = await imageSource(blob);
       if (!active) return;
-      const name = project.name.trim().replace(/[^a-zA-Z0-9 _-]/g, '').replace(/\s+/g, '-').slice(0,70) || 'xbieha-image';
+      const name = fileName(project.name, 'xbieha-image');
       const file = new File([blob], `${name}.${type === 'jpeg' ? 'jpg' : 'png'}`, { type: blob.type });
       setPrepared({ project, type, size, file, url });
     }).catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Could not prepare this image. Try a smaller export.'); });

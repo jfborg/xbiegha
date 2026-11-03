@@ -38,7 +38,8 @@ try {
     const url = URL.createObjectURL(new Blob([JSON.stringify({ format: 'xbieha-project', version: 1, project: data })], { type: 'application/json' }));
     urls.push(url);
     link.href = url;
-    link.download = `${String(project.name || 'project').replace(/[^a-zA-Z0-9 _-]/g, '').trim().replace(/\s+/g, '-').slice(0, 70) || 'project'}.xbieha`;
+    // Keep this static-page rule identical to src/fileName.ts.
+    link.download = `${String(project.name || 'project').normalize('NFC').replace(/[^\p{L}\p{N} _-]/gu, '').trim().replace(/\s+/g, '-').slice(0, 70) || 'project'}.xbieha`;
     link.textContent = 'Download backup';
     link.setAttribute('aria-label', `Download backup of ${name.textContent}`);
     row.append(label, link);
