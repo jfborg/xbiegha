@@ -259,3 +259,11 @@ input[type=checkbox] { accent-color: var(--accent); }
 
 .recovery-notice { max-width: 650px; padding: 20px 24px; background: #f2eadc; border-radius: 16px; color: #0b1826; font-size: 13px; line-height: 1.7; }
 .recovery-notice strong { font-size: 15px; }.recovery-notice p { margin: 5px 0 0; }.recovery-notice a,.recovery-notice button { color: #754d30; text-decoration: underline; text-underline-offset: 3px; }.recovery-notice button { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+
+.studio-recovery { min-height: 100vh; display: grid; place-items: center; padding: 32px 20px; background: #f8f4ee; color: #0b1826; }
+.studio-recovery-card { width: min(100%, 560px); text-align: center; }
+.studio-recovery-card > img { display: block; margin: 0 auto 28px; }
+.studio-recovery-card h1 { margin: 16px 0; font-family: Newsreader, Georgia, serif; font-size: clamp(36px, 7vw, 58px); font-weight: 400; line-height: 1.1; }
+.studio-recovery-card p { margin: 0 auto 28px; max-width: 420px; line-height: 1.6; }
+.studio-recovery-card nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #bb8460; font-size: 13px; }
+.studio-recovery-card a { color: #0b1826; text-underline-offset: 4px; }
