@@ -1,5 +1,7 @@
 # Xbieha
 
+[![CI](https://github.com/jfborg/xbiegha/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jfborg/xbiegha/actions/workflows/ci.yml)
+
 A personal photo studio for collages, passport photo preparation, everyday editing, and slideshows. React, TypeScript, Vite, and the browser Canvas API. Designed for **xbieha.com**, hosted on Vercel.
 
 ## Features
