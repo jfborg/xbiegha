@@ -1,3 +1,4 @@
+import { readLook } from '../src/looks.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { defaultAdjustments } from '../src/model.ts';
@@ -55,4 +56,13 @@ test('film grain is repeatable and passport or original rendering never applies 
   const canvas = { getContext() { throw new Error('must not touch passport/original pixels'); } };
   applyAdjustments(canvas, settings, 'passport');
   applyAdjustments(canvas, settings, 'editor', true);
+});
+
+test('backup look metadata allows absent legacy values and known recipes only', () => {
+  assert.equal(readLook(undefined), undefined);
+  const id = looks[0].id;
+  for (const amount of [0, 35.5, 100]) assert.deepEqual(readLook({ id, amount, extra: 'discard' }), { id, amount });
+  for (const invalid of [null, 'sunlit', {}, { id: 'unknown', amount: 50 }, { id, amount: '50' }, { id, amount: NaN }, { id, amount: Infinity }, { id, amount: -1 }, { id, amount: 101 }]) {
+    assert.throws(() => readLook(invalid), /Invalid photo look/);
+  }
 });

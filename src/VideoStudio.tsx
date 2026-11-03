@@ -153,15 +153,17 @@ export default function VideoStudio({ active, onBack, notify }: Props) {
     if (positionRef.current >= total - .01) { positionRef.current = 0; setPosition(0); }
     setPlaying(true);
   }
-  useEffect(() => {
-    const key = (e: KeyboardEvent) => {
+  const shortcutHandler = useRef<(e: KeyboardEvent) => void>(() => {});
+  shortcutHandler.current = (e: KeyboardEvent) => {
       if (!active || disabled || exportOpen || resetOpen || (e.target as HTMLElement).closest('input,select,textarea,button,[role=dialog]')) return;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); e.stopImmediatePropagation(); if (e.shiftKey) redo(); else undo(); }
       else if (e.code === 'Space' && edit.clips.length) { e.preventDefault(); void togglePlay(); }
       else if (e.key.toLowerCase() === 's' && !e.metaKey && !e.ctrlKey) split();
-    };
+  };
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => shortcutHandler.current(e);
     window.addEventListener('keydown', key, true); return () => window.removeEventListener('keydown', key, true);
-  });
+  }, []);
   return <div className="video-studio" hidden={!active}>
     <input ref={fileInput} type="file" accept="video/*,.mp4,.mov,.m4v,.webm,.mkv" multiple hidden onChange={e => void addFiles(Array.from(e.target.files || []))}/>
     <header className="workspace-header video-header"><div className="workspace-title"><button className="icon-button" aria-label="Back to studio" onClick={onBack}><ArrowLeft size={19}/></button><img src="/video-icon.svg" alt="" className="video-app-icon"/><div><input className="project-name" aria-label="Video project name" maxLength={80} value={edit.name} disabled={disabled} onChange={e => setEdit(v => ({ ...v, name: e.target.value }))}/><span><span className={`status-dot ${storageError ? 'error-dot' : ''}`}/>{saveStatus}</span></div></div><div className="workspace-actions"><button className="icon-button" aria-label="Undo video edit" onClick={undo} disabled={!past.length || disabled}><Undo2 size={17}/></button><button className="icon-button" aria-label="Redo video edit" onClick={redo} disabled={!future.length || disabled}><Redo2 size={17}/></button><button className="quiet-button video-new" disabled={disabled || !assets.length} onClick={() => setResetOpen(true)}>New movie</button><button className="primary-button" disabled={!edit.clips.length || disabled || total > MAX_MOVIE} onClick={() => { setPlaying(false); setExportOpen(true); }}><ArrowDownToLine size={16}/> Export video</button></div></header>

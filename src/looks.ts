@@ -75,3 +75,12 @@ export function readAdjustments(value: unknown): Adjustments {
   }
   return result;
 }
+
+// Imported look metadata must be a known recipe with a finite 0–100% strength.
+export function readLook(value: unknown): Project['look'] {
+  if (value === undefined) return undefined;
+  if (!value || typeof value !== 'object') throw new Error('Invalid photo look in this backup.');
+  const raw = value as Record<string, unknown>;
+  if (typeof raw.id !== 'string' || !looks.some(look => look.id === raw.id) || typeof raw.amount !== 'number' || !Number.isFinite(raw.amount) || raw.amount < 0 || raw.amount > 100) throw new Error('Invalid photo look in this backup.');
+  return { id: raw.id, amount: raw.amount };
+}
