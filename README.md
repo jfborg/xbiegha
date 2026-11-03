@@ -26,7 +26,7 @@ Image, slideshow and audio processing happens on the device. Slideshow imports a
 
 ## Run
 
-Use Node.js 24 and pnpm 11.25.0:
+Use Node.js 24 and pnpm 11.25.0. `.node-version` selects Node 24, `package.json` declares `engines.node >=24`, and its `packageManager` field pins pnpm. The Node test runner uses built-in TypeScript stripping, so older Node versions are not supported:
 
 ```sh
 corepack enable
