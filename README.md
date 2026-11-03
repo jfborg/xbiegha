@@ -24,6 +24,18 @@ A personal photo studio for collages, passport photo preparation, everyday editi
 
 Image, slideshow and audio processing happens on the device. Slideshow imports are resized to at most 2560px on the long edge to keep local storage and rendering practical; original files are untouched. Imported soundtrack data is included in local projects and editable backups. No application server, accounts, image uploads, analytics, AI API keys, or paid processing services are required. Vercel serves the app and bundled demonstration assets. Imported images and saved projects remain in this browser’s IndexedDB. Browser storage is not a backup: clearing site data removes projects. Use **Download backup** for an independent editable backup. Save to Photos prepares a local image for the browser’s native image menu. If you choose More sharing options, the finished image is handed to your device’s sharing interface; any destination you choose handles it independently.
 
+## Saved-project gallery and recovery
+
+The gallery keeps lightweight project summaries: the saved thumbnail, name, mode, date and photo count. IndexedDB records are read one at a time with a cursor; full photo and slideshow/soundtrack payloads are not retained in gallery state. Opening a card loads that one full project on demand, shows a loading indicator and reports a missing or unreadable project. Autosave and tool switching also insert summaries, preserving recent-first ordering. The database name and saved-project format are unchanged; old-domain recovery still reads full records to make editable backups.
+
+A top-level React error boundary replaces an unexpected rendering failure with a branded recovery screen, a **Reload the studio** button and privacy/terms links. Saved projects remain in the browser; unsaved changes are not guaranteed. Error details go only to the local browser console, with no reporting service or telemetry.
+
+## Export names and backup validation
+
+Image, editable-backup, slideshow and video exports share `src/fileName.ts`. Names are normalized to NFC and preserve Unicode letters and digits, including Arabic, Greek and accented Maltese. Leading/trailing spaces are removed, repeated spaces become hyphens, and names are limited to 70 characters before the extension. Underscores and hyphens are retained; dots, path separators, quotes, emoji and other unsupported characters are removed. Empty results use each export's existing fallback. The static recovery page mirrors this rule because it cannot import TypeScript. For example, `صيف ٢٠٢٦` exports as `صيف-٢٠٢٦.png` when PNG is selected.
+
+Imported backups require a boolean photo flip and, when present, a known look id with a finite strength from 0–100. Legacy backups without look metadata remain supported. Supplied thumbnails are discarded and regenerated locally. Photo and video keyboard listeners subscribe once while using the current handlers; modal tab navigation skips disabled inputs and selects. The separate image/export renders remain intentional for Safari's user-activation rules.
+
 ## Run
 
 Use Node.js 24 and pnpm 11.25.0. `.node-version` selects Node 24, `package.json` declares `engines.node >=24`, and its `packageManager` field pins pnpm. The Node test runner uses built-in TypeScript stripping, so older Node versions are not supported:
@@ -36,9 +48,12 @@ pnpm dev
 
 ```sh
 pnpm test
+pnpm exec tsc -b
 pnpm build
 pnpm preview
 ```
+
+GitHub CI runs the frozen install, tests, explicit type check and production build on every push to `main` and every pull request. The badge above links to its results. CI enables Corepack before Node setup so pnpm comes from `packageManager`; no deployment credentials are needed. The build downloads only the existing pinned vision models and checks their SHA-256 hashes.
 
 Vercel framework: **Vite**. Build: `pnpm build`. Output: `dist`. Production branch: `main`. No environment variables required. Connect this repository to Vercel for deployment on push.
 
@@ -106,3 +121,15 @@ Limits: 12 source files, 500 MB each, 1 GB combined; 40 clips; source duration u
 `public/video-icon.svg` is a custom navy/copper film-and-cut symbol. It is integrated into the editor and navigation, has 192px/512px install PNGs and a 180px Apple touch icon, and is configured in the tool-specific `video.webmanifest`. The main install manifest offers a Video editor shortcut.
 
 Verification: `tests/video.test.mjs` covers cut boundaries, overlap duration, audio gain envelopes, clip reordering and output dimensions. The development-only `tests/video-browser.html` generates known video/audio scenes, checks all five transitions, decodes actual MP4 exports, and verifies cancellation. It is not copied to the production build.
+
+## Improvement pass verification — 3 November 2026
+
+Implemented backlog items 1–8 in their stated order from commit `3383c8d`; the starting local source matched that commit. The audited backlog is retained in `IMPROVEMENT-BACKLOG.md`.
+
+- Baseline: 46 tests passed. Final implementation: 52 tests passed, including five Unicode filename cases and invalid/legacy look metadata coverage. `pnpm install --frozen-lockfile`, `pnpm test`, `pnpm exec tsc -b` and `pnpm build` passed on Node 24.22.1 / pnpm 11.25.0. The passing checks after each item provided the baseline for the next item; all were repeated before the documentation commit.
+- Chrome: created five sample collages, reloaded the gallery, checked thumbnails, restored all three photos, edited an older project to the top and deleted one test project. Confirmed the error fallback with a temporary render throw, then removed it and reloaded successfully. Photo editor and video undo used the latest edit state. Invalid flip/unknown-look imports were rejected and a valid backup restored.
+- Chrome and desktop Safari: exercised collage, photo editor and passport sample; document JPEG, print-sheet and Photos exports remained blocked. Both browsers rendered a four-photo 12-second 1080p MP4 slideshow and an eight-second 720p MP4 video from the existing local verification fixture, with completed export previews and download actions. Safari's full-resolution Save to Photos view was checked.
+- The in-app browser confirmed actual downloaded files named `صيف-٢٠٢٦.png` and the old-domain `A-slower-kind-of-summer.xbieha` recovery backup. Old-domain recovery also listed saved projects in Chrome. Native camera-roll insertion on a physical iPhone remains outside this desktop pass.
+- Production output retains separate lazy chunks for the vision checker, slideshow encoder, video editor, media engine and PDF library. No dependencies, lockfile, cache/cross-origin headers, document-photo rules, export guards or terms version were changed. No telemetry, upload or service-worker code was added.
+
+Implementation choices: social previews use the existing 512px branded icon with a summary card, one of item 6's specified options. CI actions are pinned to official release commit hashes. Browser checks were performed on the affected flows during the work and across all tools at the end, rather than repeating every tool before and after each small item. GitHub CI and the production build identity must also be checked after pushing; the CI badge links to the current result.
