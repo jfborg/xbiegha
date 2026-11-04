@@ -1,3 +1,4 @@
+import { desktop } from './desktop.ts';
 import { fileName } from './fileName.ts';
 import { useEffect, useRef, useState } from 'react';
 import { ImageDown, Share2 } from 'lucide-react';
@@ -61,6 +62,7 @@ export function SaveToPhotos({ project, format, size, blocked }: {
     }).finally(() => setSharing(false));
   }
 
+  if (desktop) return <p className="export-footnote">Save your image to a folder on your Mac. To add it to Apple Photos, open Photos and choose File → Import.</p>;
   return <section className="save-photos" aria-label="Save to your photo library">
     <button className="primary-button full" disabled={!ready} onClick={() => { setOpened(true); imageView.current?.scrollIntoView({ block: 'start', behavior: 'instant' }); }}>
       <ImageDown size={17}/>{!blocked && !ready && !error ? 'Preparing for Photos…' : 'Save to Photos'}

@@ -1,3 +1,4 @@
+import { desktop, loadDesktopVideo, saveDesktopVideo } from './desktop.ts';
 import type { VideoAsset, VideoEdit } from './videoModel';
 type StoredAsset = Omit<VideoAsset, 'url'>;
 function database(): Promise<IDBDatabase> {
@@ -8,6 +9,7 @@ function database(): Promise<IDBDatabase> {
   });
 }
 export async function loadVideoDraft(): Promise<{ edit: VideoEdit; assets: VideoAsset[] } | null> {
+  if (desktop) return loadDesktopVideo();
   const db = await database();
   try { return await new Promise((resolve, reject) => {
     const tx = db.transaction(['draft', 'media'], 'readonly'), draft = tx.objectStore('draft').get('current'), media = tx.objectStore('media').getAll();
@@ -16,6 +18,7 @@ export async function loadVideoDraft(): Promise<{ edit: VideoEdit; assets: Video
   }); } finally { db.close(); }
 }
 export async function saveVideoDraft(edit: VideoEdit, assets: VideoAsset[]) {
+  if (desktop) return saveDesktopVideo(edit, assets);
   const db = await database();
   try { await new Promise<void>((resolve, reject) => {
     const tx = db.transaction(['draft', 'media'], 'readwrite'), media = tx.objectStore('media');

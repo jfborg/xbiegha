@@ -133,3 +133,42 @@ Implemented backlog items 1–8 in their stated order from commit `3383c8d`; the
 - Production output retains separate lazy chunks for the vision checker, slideshow encoder, video editor, media engine and PDF library. No dependencies, lockfile, cache/cross-origin headers, document-photo rules, export guards or terms version were changed. No telemetry, upload or service-worker code was added.
 
 Implementation choices: social previews use the existing 512px branded icon with a summary card, one of item 6's specified options. CI actions are pinned to official release commit hashes. Browser checks were performed on the affected flows during the work and across all tools at the end, rather than repeating every tool before and after each small item. GitHub CI and the production build identity must also be checked after pushing; the CI badge links to the current result.
+
+## Xbieha for Mac
+
+The optional desktop edition contains the same five studios and saves editable work directly to disk. It is a standalone, locally signed Apple silicon Mac app with the Xbieha icon, native save windows, and all fonts, examples and photo-checking models bundled for offline use. It requires no development server, account or running browser. The website continues to use its existing browser storage.
+
+**Library:** `~/Library/Application Support/Xbieha/Library`. Use **Xbieha → Show project folder**, or the button in My projects, to open it in Finder.
+
+- `Projects/*.xbieha`: editable photo, collage, passport and slideshow projects, including imported photos and music.
+- `Video/current.json` and `Media/`: the current editable movie and copies of its original source files. The video editor retains one active draft, as on the website.
+- `.previous` files keep the preceding successful save. Photo-project removal moves recoverable files to the library’s `Trash` folder. Movie sources needed by the current and previous draft are retained.
+- Saves are serialized and replace files atomically. Quitting flushes pending editor changes; a failed save keeps the window open. Video files cross the desktop bridge in bounded 4 MB chunks. A draft that fails to load cannot be overwritten by an empty autosave.
+- The desktop session is in memory; project persistence never opens IndexedDB. Clearing browser data has no effect on the Mac library. Back up the whole Library folder while Xbieha is closed to preserve movie media as well as photo projects.
+
+To bring work from the website, download an editable `.xbieha` backup there, then choose **Open a project** in the Mac app. Legacy `.xbiegha` backups are also accepted. Browser libraries are not automatically migrated. Finished exports use a Mac save window so you choose the folder. Choosing an iCloud/OneDrive-managed export folder lets that independent service sync the exported file.
+
+### Build the Mac edition
+
+Use Node 24, pnpm 11.25.0 and macOS Command Line Tools (Swift, `sips`, `iconutil`, `codesign`). Desktop packaging dependencies are isolated in `desktop/`; the web dependency lockfile is unchanged.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm test
+pnpm exec tsc -b
+pnpm build
+pnpm --dir desktop install --frozen-lockfile
+pnpm --dir desktop build
+```
+
+The packaging command prints the `.app` location under the system temporary directory (`xbieha-mac-build/Xbieha-darwin-arm64/Xbieha.app` on Apple silicon). Copy it to `~/Applications/Xbieha.app` after quitting an older copy. Building outside a cloud-managed Documents folder avoids file-provider metadata interfering with signing. Verify the installed bundle with `codesign --verify --deep --strict ~/Applications/Xbieha.app`.
+
+The build pins Electron 45.2.1 and Packager 20.3.0. Its ad-hoc signature is for personal use on this Mac; public distribution would require Developer ID signing and notarization. Updates are manual. No cloud service, production deployment or browser security setting is changed by installing it. The app blocks outbound web requests, restricts its file bridge to its bundled top-level page and opens user-clicked HTTPS references in the system browser. The Mac privacy notice is bundled separately; document-photo rules and export locks are unchanged.
+
+### Mac verification — 4 November 2026
+
+- Automated: all 64 Node tests pass (52 existing plus 12 desktop/storage tests). Frozen web and desktop dependency installs, TypeScript build, Vite production build and Apple silicon app packaging pass. Tests cover fresh-process disk recovery, ordered atomic saves, corrupt-file isolation, previous-copy recovery, recoverable deletion, path validation, interrupted transfers, missing movie sources, bounded media chunks, cancelled exports, quit flushing and bypassing IndexedDB. The installed app passes deep/strict code-sign verification; its branded `.icns` matches the generated icon and its bundle identifier is `com.xbieha.studio`.
+- Installed-app checks: created and renamed a three-photo collage; saved an actual 1920 × 2400 PNG through the native save window; rendered a four-photo 12-second 1080p MP4 slideshow and cancelled its save dialog without a false success; loaded the bundled passport checker and confirmed the smiling sample keeps document exports blocked; applied Golden to a photo-edit sample. “Show project folder” opened the real Library folder in Finder.
+- Movie checks: imported the fictional eight-second 720p fixture, verified its saved source bytes match the original, rendered/exported an MP4 through the native save window, and played the export preview to its end. macOS `avconvert` decoded the exported AVC/AAC file successfully. An accessibility description initially said “Unable to play media” before Play was pressed; no playback failure occurred after pressing Play.
+- Restart checks: changed the movie name and quit immediately, then reopened the installed app. The latest movie name, original source and timeline restored, and the saved collage/slideshow/passport gallery returned. No IndexedDB folder was created for Xbieha. These checks ran with outbound network requests blocked by the desktop session.
+- Not verified: Intel Macs, other macOS versions, low-disk-space behaviour on a physically full disk, power loss, external-volume exports, very large projects at the published limits, and direct Apple Photos import. Failure/recovery paths are covered with fictional unit fixtures. The desktop camera input follows the existing desktop website behaviour: choose a photo file; mobile camera capture remains a mobile-browser feature.

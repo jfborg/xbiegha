@@ -1,3 +1,4 @@
+import { desktop } from './desktop.ts';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Check, ChevronDown, CircleAlert, FileImage, ScanFace, ShieldCheck } from 'lucide-react';
 import type { Project } from './model';
@@ -20,7 +21,7 @@ export function AssessmentReport({ assessment, pending, onRetry }: { assessment:
       <strong>{pending ? 'Checking your photo…' : !assessment ? 'Add a photo to begin' : assessment.error ? 'Photo check unavailable' : failed.length ? `${failed.length} thing${failed.length === 1 ? '' : 's'} to fix` : 'Photo checked. Let’s review.'}</strong>
       <small>Private, on-device analysis · no photo uploads</small>
     </div></div>
-    {pending ? <p className="assessment-loading"><span className="spinner"/> Checking this photo. First use may take a little longer while the private checker downloads (about 40 MB).</p>
+    {pending ? <p className="assessment-loading"><span className="spinner"/> {desktop ? 'Checking this photo with the private models bundled on your Mac.' : 'Checking this photo. First use may take a little longer while the private checker downloads (about 40 MB).'}</p>
       : assessment?.error ? <><p className="assessment-error">{assessment.error} Export stays locked until the check can run.</p><button className="text-link" onClick={onRetry}>Try the check again <ArrowRight size={14}/></button></>
       : assessment ? <div className="assessment-findings">{attention.map(finding)}{clear.length > 0 && <details className="assessment-clear"><summary>{clear.length} checks with no obvious issue</summary>{clear.map(finding)}</details>}</div>
       : <p>The checker starts automatically when you add or take a photo.</p>}

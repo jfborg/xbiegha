@@ -1,0 +1,9 @@
+{
+  "name": "xbieha-mac-builder",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "scripts": { "build": "node build.mjs" },
+  "devDependencies": { "@electron/packager": "20.3.0" }
+}

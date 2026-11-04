@@ -11,3 +11,9 @@ public/vision/*.task
 public/vision/*.onnx
 public/vision/mediapipe/
 public/vision/onnx/
+
+# Local Mac packages are built from source, never committed.
+desktop/staging/
+desktop/release/
+desktop/icons/
+desktop/cache/
